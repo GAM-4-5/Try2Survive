@@ -1,11 +1,18 @@
+import pygame
+
+playerImage = pygame.image.load('player.png')
+
 class Player:
-    def __init__(self, x, y, width, height, speed, color):
+    def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.speed = speed
-        self.color = color
+        self.speed = 25
+
+    def draw(self, window):
+        window.blit(playerImage, (self.x, self.y))
+
     def moveUp(self):
         if self.y > 0: #Pomiče igrača do gornjeg ruba prozora
             self.y -= self.speed
