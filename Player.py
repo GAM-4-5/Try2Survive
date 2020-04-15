@@ -8,14 +8,26 @@ class Player:
         self.width = 64
         self.height = 64
         self.speed = 10
-        self.image = pygame.image.load('player.png') # Import slike igrača
-        self.angle = 0
+        self.image = pygame.image.load('Assets/player.png') # Import slike igrača
+        self.imageAngle = 0
+        self.hitbox = pygame.Rect(self.x - self.width / 2, self.y - self.height / 2, self.width, self.height)
+        self.hitCount = 0
+
+    # Vraća koordinate igrača
+    def getCoordinates(self):
+        return self.x, self.y
+
+    # Vraća centralne koordinate igrača
+    def getCenterCoordinates(self):
+        return self.x + self.width / 2, self.y + self.height / 2
 
     # Crta igrača u prozoru
     def draw(self, window):
-        image = pygame.transform.rotate(self.image, self.angle) # Rotira sliku igrača
+        image = pygame.transform.rotate(self.image, self.imageAngle) # Rotira sliku igrača
         window.blit(image, (self.x - int(image.get_width() / 2), self.y - int(image.get_height() / 2))) # Centrira rotiranu sliku
-        self.angle = (self.angle + 7) % 360
+        self.imageAngle = (self.imageAngle + 7) % 360
+        # pygame.draw.rect(window, (255, 0, 0), self.hitbox, 2)
+        self.hitbox = pygame.Rect(self.x - self.width / 2, self.y - self.height / 2, self.width, self.height)
 
     # Pomiče igrača do gornjeg ruba prozora
     def moveUp(self):
@@ -37,7 +49,10 @@ class Player:
         if (self.x - self.width / 2 - 10) > 0:
             self.x -= self.speed
 
-    # Vraća osnovne vrijednosti instance Player
+    # Vraća osnovne vrijednosti instance klase Player
     def values(self):
         return self.x, self.y, self.width, self.height
 
+    # Vraća bool je li igrač pogođen
+    def isHit(self, enemy):
+        return self.hitbox.colliderect(enemy.hitbox)

@@ -1,3 +1,4 @@
+import pygame
 from Config import *
 from Enemy import *
 from Player import *
@@ -8,33 +9,57 @@ window = pygame.display.set_mode((windowWidth, windowHeight)) # Definira pygame 
 pygame.display.set_caption("Try2Survive") # Postavlja naslov pygame prozora
 clock = pygame.time.Clock()
 
-backgroundImage = pygame.image.load('background.jpg') # Import pozadine
+backgroundImage = pygame.image.load('Assets/background.jpg') # Import pozadine
+backgroundImageAngle = 0
 
-player = Player(50, 50) # Igrač
-enemies = [] # Lista neprijtelja
+# Import slika eksplozije
+explosion = [pygame.image.load('Assets/explosion/explosion1.png'), pygame.image.load('Assets/explosion/explosion2.png'),
+             pygame.image.load('Assets/explosion/explosion3.png'), pygame.image.load('Assets/explosion/explosion4.png'),
+             pygame.image.load('Assets/explosion/explosion5.png'), pygame.image.load('Assets/explosion/explosion6.png')]
+explosionCount = 6
+explosionCoords = (0, 0)
 
-# Crta pygame prozor i objekte u njemu
+player = Player(windowWidth / 2, windowHeight / 2) # Igrač
+enemies = [] # Lista neprijatelja
+
+# Prikazuje pygame prozor i objekte u njemu
 def redrawWindow():
-    window.blit(backgroundImage, (0, 0))
-    player.draw(window)
+    window.blit(backgroundImage, (0, 0)) # Postavlja pozadinu prozora
+    player.draw(window) # Prikazuje igrača u prozoru
 
-    # Prolazi kroz listu neprijatelja te briše neprijatelje koji su izašli iz vidljivog područja prozora
+    global explosionCount, explosionCoords
+    if explosionCount < 6:
+        window.blit(explosion[explosionCount], explosionCoords) # Prikazuje određeni frame eksplozije
+        explosionCount += 1
+
+    # Prolazi kroz listu neprijatelja
     for enemy in enemies:
+
+        # Briše neprijatelje koji su izašli iz vidljivog djela prozora
         if (enemy.x1 + enemy.width < 0 or enemy.x1 - enemy.width > windowWidth) or (enemy.y1 + enemy.height < 0 or enemy.y1 - enemy.height > windowHeight):
             enemies.pop(enemies.index(enemy))
-        enemy.draw(window)
-        enemy.move()
+
+        #Provjerava je li igrač pogođen te ovisno o tome briše neprijatelja i povećava njegov hitCount
+        if player.isHit(enemy):
+            player.hitCount += 1
+            explosionCount = 0
+            explosionCoords = (player.hitbox.clip(enemy.hitbox).topleft[0] - 32, player.hitbox.clip(enemy.hitbox).topleft[1] - 32)
+            enemies.pop(enemies.index(enemy))
+
+        enemy.draw(window) # Prikazuje neprijatelja
+        enemy.move() # Pomiče neprijatelja
 
     pygame.display.update() # Ažurira prozor kako bi se vidjele napravljene promjene
 
-# main
+
+# ------------------------ MAIN PETLJA ------------------------ #
 run = True # Uvjet za izvršavanje petlje
 while run:
     clock.tick(framerate) # Postavlja framerate igre
 
     # Petlja koja prolazi kroz evente koje generira korisnik
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT: # Provjerava je li korisnik klikuo na X za izlaz iz igre
             run = False
 
     # Poziva određene funkcije ovisno o pritisnutoj tipki
@@ -51,7 +76,7 @@ while run:
         run = False
 
     # Stvara nove neprijatelje kada stari nestanu iz vidljivog područja prozora
-    if len(enemies) < 10:
+    if len(enemies) < 15:
         enemy = Enemy()
         enemies.append(enemy)
 
