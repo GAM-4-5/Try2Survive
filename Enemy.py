@@ -1,8 +1,7 @@
-import pygame
 from random import randint
 from Config import *
 
-
+enemyImage = pygame.image.load('Assets/enemy.png')  # Import slike neprijatelja
 class Enemy:
     def __init__(self):
         self.x = randint(0, 3)  # Generira random broj o kojem ovisi smjer iz kojeg dolazi neprijatelj
@@ -34,12 +33,13 @@ class Enemy:
         self.dx = (self.x2 - self.x1) / framerate
         self.dy = (self.y2 - self.y1) / framerate
 
-        self.width = 32
-        self.height = 32
+        self.width = 50
+        self.height = 50
         self.speedFactor = randint(3, 6)
-        self.image = pygame.image.load('Assets/enemy.png')  # Import slike neprijatelja
+        self.image = pygame.transform.scale(enemyImage, (self.width, self.height))
         self.imageAngle = 0
         self.hitbox = pygame.Rect(self.x1 - self.width / 2, self.y1 - self.height / 2, self.width, self.height)
+        self.damage = 100 // self.speedFactor  # Vrijednost koju neprijatelj skida healthu igrača ovisno o brzini neprijatelja
 
     # Vraća koordinate neprijatelja
     def getCoordinates(self):
@@ -52,8 +52,7 @@ class Enemy:
     # Crta neprijatelja u prozoru
     def draw(self, window):
         image = pygame.transform.rotate(self.image, self.imageAngle)  # Rotira sliku neprijatelja
-        window.blit(image, (
-        self.x1 - int(image.get_width() / 2), self.y1 - int(image.get_height() / 2)))  # Centrira rotiranu sliku
+        window.blit(image, (self.x1 - int(image.get_width() / 2), self.y1 - int(image.get_height() / 2)))  # Centrira rotiranu sliku
         self.imageAngle = (self.imageAngle + 3) % 360
         # pygame.draw.rect(window, (255, 0, 0), self.hitbox, 2)
         self.hitbox = pygame.Rect(self.x1 - self.width / 2, self.y1 - self.height / 2, self.width, self.height)

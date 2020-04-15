@@ -1,17 +1,19 @@
-import pygame
 from Config import *
 
+playerImage = pygame.image.load('Assets/player.png') # Import slike igrača
 class Player:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.width = 64
-        self.height = 64
+        self.width = 100
+        self.height = 100
         self.speed = 10
-        self.image = pygame.image.load('Assets/player.png') # Import slike igrača
+        self.image = pygame.transform.scale(playerImage, (self.width, self.height))
         self.imageAngle = 0
         self.hitbox = pygame.Rect(self.x - self.width / 2, self.y - self.height / 2, self.width, self.height)
         self.hitCount = 0
+        self.health = 100
+        self.score = 0
 
     # Vraća koordinate igrača
     def getCoordinates(self):
@@ -25,7 +27,7 @@ class Player:
     def draw(self, window):
         image = pygame.transform.rotate(self.image, self.imageAngle) # Rotira sliku igrača
         window.blit(image, (self.x - int(image.get_width() / 2), self.y - int(image.get_height() / 2))) # Centrira rotiranu sliku
-        self.imageAngle = (self.imageAngle + 7) % 360
+        self.imageAngle = (self.imageAngle + 10) % 360
         # pygame.draw.rect(window, (255, 0, 0), self.hitbox, 2)
         self.hitbox = pygame.Rect(self.x - self.width / 2, self.y - self.height / 2, self.width, self.height)
 
@@ -55,4 +57,9 @@ class Player:
 
     # Vraća bool je li igrač pogođen
     def isHit(self, enemy):
-        return self.hitbox.colliderect(enemy.hitbox)
+        if self.hitbox.colliderect(enemy.hitbox):
+            self.score -= enemy.damage if self.score > enemy.damage else self.score
+            self.hitCount += 1
+            self.health -= 5
+            return True
+        return False
