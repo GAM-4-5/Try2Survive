@@ -1,36 +1,22 @@
+from Loader import *
 from Enemy import *
 from Player import *
 
-# window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)  # Definira pygame prozor u fullscreen modeu
-window = pygame.display.set_mode((windowWidth, windowHeight))  # Definira pygame prozor i njegove dimenzije
-pygame.display.set_caption("Try2Survive")  # Postavlja naslov pygame prozora
 clock = pygame.time.Clock()
 
-backgroundImageNames = ['Assets/background/space' + str(i) + '.png' for i in range(1, 203)]  # Imena pozadinskih slika
-backgroundImages = [pygame.transform.scale(pygame.image.load(image).convert_alpha(), (windowWidth, windowHeight)) for image in backgroundImageNames]  # Import pozadine
+player = Player(windowWidth / 2, windowHeight / 2)  # Igrač pozicioniran na sredinu prozora
 
-backgroundTrack = pygame.mixer.music.load('Assets/audio/backgroundTrack.wav')  # Import pozadinske melodije
-pygame.mixer.music.set_volume(0.3)  # Zvuk pozadinske melodije
-playerHitSoundEffect = pygame.mixer.Sound('Assets/audio/playerHitSoundEffect.wav')  # Import zvučnog efekta eksplozije
-playerHitSoundEffect.set_volume(0.8)  # Zvuk eksplozije
-
-# Import slika eksplozije
-explosion = [pygame.image.load('Assets/explosion/explosion1.png'), pygame.image.load('Assets/explosion/explosion2.png'),
-             pygame.image.load('Assets/explosion/explosion3.png'), pygame.image.load('Assets/explosion/explosion4.png'),
-             pygame.image.load('Assets/explosion/explosion5.png'), pygame.image.load('Assets/explosion/explosion6.png')]
 explosionCount = 6  # Counter za iteraciju po listi slika eksplozije
 explosionCoords = (0, 0)  # Koordinate na kojima se rpikazuje eksplozija
 
-player = Player(windowWidth / 2, windowHeight / 2)  # Igrač pozicioniran na sredinu prozora
 enemies = []  # Lista neprijatelja
 maxEnemyNumber = 5  # Početni broj maksimalnog mogućeg broja neprijatelja koji se mogu instacirati i prikazati u prozoru
 
-gameOver = False
+gameOver = False  # Kada je True igra završava
 
 # Prikazuje neprijatelje u prozoru i provjerava je li igrač pogođen
 def enemyCheck():
     global explosionCount, explosionCoords, gameOver
-
     if explosionCount < 6:
         window.blit(explosion[explosionCount], explosionCoords)  # Prikazuje određeni frame eksplozije
         explosionCount += 1
@@ -57,8 +43,7 @@ def enemyCheck():
         enemy.draw(window)  # Prikazuje neprijatelja
         enemy.move()  # Pomiče neprijatelja
 
-font = pygame.font.SysFont("avenirnextttc", 30, True, True)
-playerImage = pygame.transform.scale(pygame.image.load('Assets/player.png'), (50, 50))
+playerImage = pygame.transform.scale(pygame.image.load('Assets/player.png'), (60, 60))
 # Prikazuje health bar i score igrača u prozoru
 def drawGameStatusInfo():
     damageBar = pygame.Rect(int(windowWidth / 2) - 300, 30, 600, 25)
@@ -74,8 +59,9 @@ i = 0
 # Prikazuje pygame prozor i objekte u njemu
 def redrawWindow():
     global i
-    i = (i + 0.5) % 202
     window.blit(backgroundImages[int(i//1)], (0, 0))  # Postavlja pozadinu prozora
+    i = (i + 0.5) % 202
+
     player.draw(window)  # Prikazuje igrača u prozoru
     enemyCheck()
     drawGameStatusInfo()
@@ -112,7 +98,7 @@ while run:
         enemies.append(enemy)
         # Povećava maksimalan broj neprijatelja do 30
         if maxEnemyNumber < 20:
-            maxEnemyNumber += 0.25
+            maxEnemyNumber *= 1.01
 
     redrawWindow()
 
