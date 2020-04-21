@@ -12,7 +12,7 @@ class Player:
         self.imageAngle = 0
         self.hitbox = pygame.Rect(self.x - self.width / 2, self.y - self.height / 2, self.width, self.height)
         self.hitCount = 0
-        self.health = 100
+        self.health = 500
         self.score = 0
 
     # Vraća koordinate igrača
@@ -60,6 +60,6 @@ class Player:
         if self.hitbox.colliderect(enemy.hitbox):
             self.score -= enemy.damage if self.score > enemy.damage else self.score
             self.hitCount += 1
-            self.health -= 5
+            self.health -= enemy.damage if self.health > enemy.damage else self.health
             return True
         return False

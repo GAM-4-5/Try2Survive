@@ -7,13 +7,4 @@
     <orderEntry type="jdk" jdkName="Python 3.8" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
-  <component name="TemplatesService">
-    <option name="TEMPLATE_FOLDERS">
-      <list>
-        <option value="$MODULE_DIR$/Assets" />
-        <option value="$MODULE_DIR$/Assets/explosion" />
-        <option value="$MODULE_DIR$/Assets/background" />
-      </list>
-    </option>
-  </component>
 </module>
