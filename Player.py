@@ -12,7 +12,8 @@ class Player:
         self.imageAngle = 0
         self.hitbox = pygame.Rect(self.x - self.width / 2, self.y - self.height / 2, self.width, self.height)
         self.hitCount = 0
-        self.health = 50
+        self.health = 500
+        self.maxHealth = 500
         self.score = 0
 
     # Vraća koordinate igrača

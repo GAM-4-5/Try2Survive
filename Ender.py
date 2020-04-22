@@ -1,4 +1,4 @@
-from Config import *
+from Loader import *
 from tkinter import *
 
 class Ender(Frame):
@@ -45,8 +45,12 @@ class Ender(Frame):
 
     def startAgain(self):
         self.root.destroy()
+        pygame.init()
+        loadData()
+        from Game import Game
+        game = Game()
+        game.main()
         return True
-
 
 if __name__ == '__main__':
     ender = Ender(Tk(), 324)

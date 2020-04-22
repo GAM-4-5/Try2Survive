@@ -2,6 +2,7 @@ from tkinter import *
 from Loader import *
 from Player import *
 from Enemy import *
+from Ender import Ender
 
 class Game():
     def __init__(self):
@@ -54,17 +55,17 @@ class Game():
     # Prikazuje health bar i score igrača u prozoru
     def drawGameStatusInfo(self):
         damageBar = pygame.Rect(int(windowWidth // 2 - 300), 30, 600, 25)
-        healthBar = pygame.Rect(int(windowWidth // 2 - 300), 30, int(1.2 * self.player.health), 25)
+        healthBar = pygame.Rect(int(windowWidth // 2 - 300), 30, int(600 * self.player.health / self.player.maxHealth), 25)
         pygame.draw.rect(window, red, damageBar)
         pygame.draw.rect(window, (0, 180, 0), healthBar)
         window.blit(self.playerImage, (healthBar.midright[0] - self.playerImage.get_width() // 2,
                                        healthBar.centery - self.playerImage.get_height() // 2))
-        healthText = font.render(str(round(self.player.health / 5, 1)) + "%", 100, white)
-        window.blit(healthText,(damageBar.centerx - healthText.get_width() // 2,
+        healthText = fontGameStatusBar.render(str(round(self.player.health / 5, 1)) + "%", 100, white)
+        window.blit(healthText, (damageBar.centerx - healthText.get_width() // 2,
                                 damageBar.centery - healthText.get_height() // 2))
 
         text = font.render("Score: " + str(round(self.player.score, 0)), 100, white)
-        window.blit(text, (windowWidth - text.get_width() - 50, 20))
+        window.blit(text, (windowWidth - text.get_width() - 50, 30))
 
     # Prikazuje pygame prozor i objekte u njemu
     def redrawWindow(self):
@@ -88,8 +89,11 @@ class Game():
             pygame.draw.rect(window, black, rect)
             pygame.display.update()
 
+        pygame.display.quit()
         pygame.quit()
-        ender = Ender(Tk(), round(self.player.score, 0))
+        score = round(self.player.score, 0)
+        del(self)
+        ender = Ender(Tk(), score)
         ender.mainloop()
 
     # ------------------------ MAIN PETLJA ------------------------ #
@@ -128,9 +132,9 @@ class Game():
                 if len(self.enemies) < self.maxEnemyNumber:
                     enemy = Enemy()
                     self.enemies.append(enemy)
-                    # Povećava maksimalan broj neprijatelja do 20 svake sekunde (svakih 60 frameova)
-                    if self.maxEnemyNumber < 20 and not(self.frameCounter % 60):
-                        self.maxEnemyNumber += 0.5
+                # Povećava maksimalan broj neprijatelja do 20 svake sekunde (svakih 60 frameova)
+                if self.maxEnemyNumber < 20 and not(self.frameCounter % 60):
+                    self.maxEnemyNumber += 0.5
 
             self.redrawWindow()
 
