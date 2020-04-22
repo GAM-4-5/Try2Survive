@@ -2,17 +2,17 @@ from Config import *
 
 playerImage = pygame.image.load('Assets/player.png') # Import slike igrača
 class Player:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    def __init__(self):
         self.width = 100
         self.height = 100
+        self.x = windowWidth / 2
+        self.y = windowHeight + self.height
         self.speed = 10
         self.image = pygame.transform.scale(playerImage, (self.width, self.height))
         self.imageAngle = 0
         self.hitbox = pygame.Rect(self.x - self.width / 2, self.y - self.height / 2, self.width, self.height)
         self.hitCount = 0
-        self.health = 500
+        self.health = 50
         self.score = 0
 
     # Vraća koordinate igrača
