@@ -134,7 +134,6 @@ class Game():
 
             self.redrawWindow()
 
-            # TODO: napraviti game over izbornik
             if self.isGameOver:
                 self.gameOver()
                 break
