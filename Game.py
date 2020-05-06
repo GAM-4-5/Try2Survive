@@ -92,7 +92,6 @@ class Game():
         pygame.display.quit()
         pygame.quit()
         score = round(self.player.score, 0)
-        del(self)
         ender = Ender(Tk(), score)
         ender.mainloop()
 

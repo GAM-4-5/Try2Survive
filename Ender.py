@@ -45,8 +45,6 @@ class Ender(Frame):
 
     def startAgain(self):
         self.root.destroy()
-        pygame.init()
-        loadData()
         from Game import Game
         game = Game()
         game.main()
