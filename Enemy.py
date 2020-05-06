@@ -57,7 +57,7 @@ class Enemy:
         # pygame.draw.rect(window, (255, 0, 0), self.hitbox, 2)
         self.hitbox = pygame.Rect(self.x1 - self.width / 2, self.y1 - self.height / 2, self.width, self.height)
 
-    # Pomiče neprijatelja preko prozora po zadaoj putanji
+    # Pomiče neprijatelja preko prozora po zadanoj putanji
     def move(self):
         if (0 < self.x1 + self.width and self.x1 < windowWidth) or (
                 0 < self.y1 + self.height and self.y1 < windowHeight):
