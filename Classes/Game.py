@@ -1,8 +1,8 @@
 from tkinter import *
 from Loader import *
-from Player import *
-from Enemy import *
-from Ender import Ender
+from Classes.Player import *
+from Classes.Enemy import *
+from Classes.Ender import Ender
 
 class Game():
     def __init__(self):

@@ -1,6 +1,6 @@
 from Config import *
 from tkinter import *
-from Game import Game
+from Classes.Game import Game
 
 class Starter(Frame):
     def __init__(self, root):

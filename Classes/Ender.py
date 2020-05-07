@@ -45,7 +45,7 @@ class Ender(Frame):
 
     def startAgain(self):
         self.root.destroy()
-        from Game import Game
+        from Classes.Game import Game
         game = Game()
         game.main()
         return True
